@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox prefHeight="607.0" prefWidth="662.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projet_2.HelloController">
+   <children>
+      <MenuBar prefHeight="0.0" prefWidth="467.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Fichier">
+            <items>
+              <MenuItem fx:id="saveOne" mnemonicParsing="false" text="Enregistrer dans un fichier" />
+                  <MenuItem fx:id="send" mnemonicParsing="false" text="Envoi Courriel" />
+                  <MenuItem fx:id="saveTwo" mnemonicParsing="false" text="Enregistrer dans la base de données" />
+                  <MenuItem fx:id="exit" mnemonicParsing="false" text="Quitter" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Paramètres">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Aide">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+      </MenuBar>
+      <Label text="Recherche Vinyle" underline="true">
+         <VBox.margin>
+            <Insets bottom="20.0" left="10.0" />
+         </VBox.margin>
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <AnchorPane prefHeight="234.0" prefWidth="662.0">
+         <children>
+            <AnchorPane layoutX="15.333333015441895" maxWidth="350.0" minWidth="350.0" prefWidth="350.0">
+               <children>
+                  <Label layoutY="5.0" text="Titre" />
+                  <TextField fx:id="title" layoutX="58.0" layoutY="1.0" promptText="Sélectionnez un titre" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="15.333333015441895" layoutY="52.00000762939453" maxWidth="350.0" minWidth="350.0" prefWidth="350.0">
+               <children>
+                  <Label layoutY="5.0" text="Genre" />
+                  <ComboBox fx:id="genre" layoutX="60.0" layoutY="1.0" prefWidth="150.0" value="Sélectionnez un genre">
+                      <items>
+                          <FXCollections fx:factory="observableArrayList">
+                              <String fx:value="Rock" />
+                              <String fx:value="Blues" />
+                              <String fx:value="Jazz" />
+                              <String fx:value="Reggae" />
+                              <String fx:value="Funk" />
+                              <String fx:value="Electro" />
+                              <String fx:value="DubStep" />
+                              <String fx:value="Soul" />
+                          </FXCollections>
+                      </items>
+                  </ComboBox>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="15.333333015441895" layoutY="104.00000762939453" maxWidth="350.0" minWidth="350.0" prefWidth="350.0">
+               <children>
+                  <Label layoutY="5.0" text="Date" />
+                  <DatePicker fx:id="date" layoutX="59.0" layoutY="1.0" promptText="Sélectionnez une date" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="15.333333015441895" layoutY="156.00000762939453" maxWidth="350.0" minWidth="350.0" prefWidth="350.0">
+               <children>
+                  <Label layoutY="5.0" text="Prix" />
+                  <TextField fx:id="priceMin" layoutX="58.0" layoutY="1.0" prefHeight="25.0" prefWidth="63.0" promptText="Prix min" />
+                  <TextField fx:id="priceMax" layoutX="152.0" layoutY="1.0" prefHeight="25.0" prefWidth="63.0" promptText="Prix max" />
+                  <Label layoutX="121.0" layoutY="5.0" text="€  à" />
+                  <Label layoutX="215.0" layoutY="5.0" text="€" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="436.0" layoutY="15.0">
+               <children>
+                  <CheckBox fx:id="discogs" mnemonicParsing="false" text="Discogs.com">
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                  </CheckBox>
+                  <CheckBox fx:id="fnac" layoutY="27.33331298828125" mnemonicParsing="false" text="Fnac.com">
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                  </CheckBox>
+                  <CheckBox fx:id="culturefactory" layoutY="136.66665649414062" mnemonicParsing="false" text="Culturefactory.fr" />
+                  <CheckBox fx:id="vinylcorner" layoutY="54.666656494140625" mnemonicParsing="false" text="Vinylcorner.fr">
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                  </CheckBox>
+                  <CheckBox fx:id="leboncoin" layoutY="82.0" mnemonicParsing="false" text="Leboncoin.fr">
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                  </CheckBox>
+                  <CheckBox fx:id="mesvinyles" layoutY="109.33331298828125" mnemonicParsing="false" text="Mesvinyles.fr">
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                  </CheckBox>
+               </children>
+            </AnchorPane>
+            <Button fx:id="search" layoutX="69.0" layoutY="206.0" mnemonicParsing="false" text="Rechercher" />
+            <Button fx:id="erase" layoutX="184.0" layoutY="206.0" mnemonicParsing="false" onAction="#clean" text="Effacer" />
+         </children>
+      </AnchorPane>
+      <ProgressBar prefHeight="18.0" prefWidth="666.0" progress="0.0">
+         <VBox.margin>
+            <Insets top="20.0" />
+         </VBox.margin>
+      </ProgressBar>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="662.8033542633057">
+         <VBox.margin>
+            <Insets top="15.0" />
+         </VBox.margin>
+      </Text>
+   </children>
+</VBox>
