@@ -18,7 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="607.0" prefWidth="662.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projet_2.HelloController">
+<VBox prefHeight="607.0" prefWidth="662.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projet_2.Controller">
    <children>
       <MenuBar prefHeight="0.0" prefWidth="467.0">
         <menus>
@@ -27,17 +27,17 @@
               <MenuItem fx:id="saveOne" mnemonicParsing="false" text="Enregistrer dans un fichier" />
                   <MenuItem fx:id="send" mnemonicParsing="false" text="Envoi Courriel" />
                   <MenuItem fx:id="saveTwo" mnemonicParsing="false" text="Enregistrer dans la base de données" />
-                  <MenuItem fx:id="exit" mnemonicParsing="false" text="Quitter" />
+                  <MenuItem fx:id="exit" mnemonicParsing="false" onAction="#close" text="Quitter" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Paramètres">
             <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
+              <MenuItem fx:id="db" mnemonicParsing="false" onAction="#dbAccess" text="Base de données" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Aide">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem fx:id="notice" mnemonicParsing="false" text="Mode d'emploi" />
             </items>
           </Menu>
         </menus>
@@ -64,7 +64,7 @@
             <AnchorPane layoutX="15.333333015441895" layoutY="52.00000762939453" maxWidth="350.0" minWidth="350.0" prefWidth="350.0">
                <children>
                   <Label layoutY="5.0" text="Genre" />
-                  <ComboBox fx:id="genre" layoutX="60.0" layoutY="1.0" prefWidth="150.0" value="Sélectionnez un genre">
+                  <ComboBox fx:id="genre" layoutX="60.0" layoutY="1.0" prefWidth="150.0" promptText="Sélectionnez un genre">
                       <items>
                           <FXCollections fx:factory="observableArrayList">
                               <String fx:value="Rock" />
