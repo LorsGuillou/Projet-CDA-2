@@ -16,7 +16,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <VBox prefHeight="607.0" prefWidth="662.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projet_2.Controller">
    <children>
@@ -25,8 +24,8 @@
           <Menu mnemonicParsing="false" text="Fichier">
             <items>
               <MenuItem fx:id="saveOne" mnemonicParsing="false" text="Enregistrer dans un fichier" />
-                  <MenuItem fx:id="send" mnemonicParsing="false" text="Envoi Courriel" />
-                  <MenuItem fx:id="saveTwo" mnemonicParsing="false" text="Enregistrer dans la base de données" />
+                  <MenuItem fx:id="send" mnemonicParsing="false" onAction="#mailPopup" text="Envoi Courriel" />
+                  <MenuItem fx:id="saveTwo" mnemonicParsing="false" onAction="#dbPopup" text="Enregistrer dans la base de données" />
                   <MenuItem fx:id="exit" mnemonicParsing="false" onAction="#close" text="Quitter" />
             </items>
           </Menu>
@@ -125,7 +124,7 @@
                   </CheckBox>
                </children>
             </AnchorPane>
-            <Button fx:id="search" layoutX="69.0" layoutY="206.0" mnemonicParsing="false" text="Rechercher" />
+            <Button fx:id="search" layoutX="69.0" layoutY="206.0" mnemonicParsing="false" onAction="#scrap" text="Rechercher" />
             <Button fx:id="erase" layoutX="184.0" layoutY="206.0" mnemonicParsing="false" onAction="#clean" text="Effacer" />
          </children>
       </AnchorPane>
@@ -134,10 +133,6 @@
             <Insets top="20.0" />
          </VBox.margin>
       </ProgressBar>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="662.8033542633057">
-         <VBox.margin>
-            <Insets top="15.0" />
-         </VBox.margin>
-      </Text>
+      <Label fx:id="result" text="Label" />
    </children>
 </VBox>

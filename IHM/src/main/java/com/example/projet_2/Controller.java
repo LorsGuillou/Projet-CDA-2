@@ -54,6 +54,9 @@ public class Controller {
     private Button erase;
 
     @FXML
+    private Label result;
+
+    @FXML
     private MenuItem saveOne;
 
     @FXML
@@ -80,7 +83,6 @@ public class Controller {
     @FXML
     protected void clean() {
         title.setText("");
-        genre.setValue(genre.getPromptText());
         date.setValue(null);
         priceMin.setText("");
         priceMax.setText("");
@@ -91,6 +93,20 @@ public class Controller {
         mesvinyles.setSelected(false);
         culturefactory.setSelected(false);
     };
+
+    public void refreshComboBox() {
+        genre.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item == null || empty) {
+                    setText(genre.getPromptText());
+                } else {
+                    setText(item);
+                }
+            }
+        });
+    }
 
     @FXML
     protected void close() {
@@ -106,17 +122,13 @@ public class Controller {
         TextField textField = new TextField();
         Button button1 = new Button("Envoyer");
         Button button2 = new Button("Annuler");
-        button1.setOnAction(e -> popupmail.close());
+        button2.setOnAction(event -> popupmail.close());
         VBox layout = new VBox(10);
         layout.getChildren().addAll(label1, label2, textField, button1, button2);
         layout.setAlignment(Pos.CENTER);
         Scene scene1 = new Scene(layout, 300, 250);
         popupmail.setScene(scene1);
         popupmail.showAndWait();
-    }
-
-    public void onMailClick() throws IOException {
-        mailPopup();
     }
 
     public void dbScene() throws IOException {
@@ -134,21 +146,20 @@ public class Controller {
     }
 
     public void dbPopup() throws IOException {
-        Stage popupmail = new Stage();
-        popupmail.initModality(Modality.APPLICATION_MODAL);
-        popupmail.setTitle("Transmission BDD");
+        Stage popupdb = new Stage();
+        popupdb.initModality(Modality.APPLICATION_MODAL);
+        popupdb.setTitle("Transmission BDD");
         Label label1 = new Label ("Transmission des données à la base de données");
-        Label label2 = new Label("Veuillez saisir l'email de l'expéditeur");
-        TextField textField = new TextField();
-        Button button1 = new Button("Envoyer");
+        Label label2 = new Label("Cliquez sur Valider pour lancer la transmission :");
+        Button button1 = new Button("Valider");
         Button button2 = new Button("Annuler");
-        button1.setOnAction(e -> popupmail.close());
+        button2.setOnAction(event -> popupdb.close());
         VBox layout = new VBox(10);
-        layout.getChildren().addAll(label1, label2, textField, button1, button2);
+        layout.getChildren().addAll(label1, label2, button1, button2);
         layout.setAlignment(Pos.CENTER);
         Scene scene1 = new Scene(layout, 300, 250);
-        popupmail.setScene(scene1);
-        popupmail.showAndWait();
+        popupdb.setScene(scene1);
+        popupdb.showAndWait();
     }
 
     @FXML
@@ -164,5 +175,12 @@ public class Controller {
     protected void exitWindow() {
         Stage stage = (Stage) dbClose.getScene().getWindow();
         stage.close();
+    }
+
+    public void scrap() throws Exception {
+        Scrapping s = new Scrapping(title.getText(), genre.getValue(), date.getValue(), priceMin.getText(), priceMax.getText());
+        s.setLeboncoin(true);
+        s.start();
+        result.setText(s.toString());
     }
 }
