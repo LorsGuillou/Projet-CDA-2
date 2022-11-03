@@ -80,20 +80,6 @@ public class Controller {
     @FXML
     private Button dbClose;
 
-    @FXML
-    protected void clean() {
-        title.setText("");
-        date.setValue(null);
-        priceMin.setText("");
-        priceMax.setText("");
-        discogs.setSelected(false);
-        fnac.setSelected(false);
-        vinylcorner.setSelected(false);
-        leboncoin.setSelected(false);
-        mesvinyles.setSelected(false);
-        culturefactory.setSelected(false);
-    };
-
     public void refreshComboBox() {
         genre.setButtonCell(new ListCell<>() {
             @Override
@@ -107,6 +93,22 @@ public class Controller {
             }
         });
     }
+
+    @FXML
+    protected void clean() {
+        title.setText("");
+        genre.getSelectionModel().clearSelection();
+        refreshComboBox();
+        date.setValue(null);
+        priceMin.setText("");
+        priceMax.setText("");
+        discogs.setSelected(false);
+        fnac.setSelected(false);
+        vinylcorner.setSelected(false);
+        leboncoin.setSelected(false);
+        mesvinyles.setSelected(false);
+        culturefactory.setSelected(false);
+    };
 
     @FXML
     protected void close() {
@@ -178,9 +180,14 @@ public class Controller {
     }
 
     public void scrap() throws Exception {
-        Scrapping s = new Scrapping(title.getText(), genre.getValue(), date.getValue(), priceMin.getText(), priceMax.getText());
-        s.setLeboncoin(true);
-        s.start();
-        result.setText(s.toString());
+        String searchTitle = title.getText();
+        System.out.println(searchTitle);
+        String searchGenre = genre.getValue();
+        System.out.println(searchGenre);
+        String searchDate = date.getValue().toString().substring(0, 4);
+        System.out.println(searchDate);
+        String searchPriceMin = priceMin.getText();
+        String searchPriceMax = priceMax.getText();
+        System.out.println(searchPriceMin + " | " + searchPriceMax);
     }
 }
