@@ -1,5 +1,9 @@
 package com.example.projet_2;
 
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
+import com.gargoylesoftware.htmlunit.html.HtmlElement;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,7 +15,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class Controller {
     @FXML
@@ -181,13 +187,120 @@ public class Controller {
 
     public void scrap() throws Exception {
         String searchTitle = title.getText();
-        System.out.println(searchTitle);
         String searchGenre = genre.getValue();
-        System.out.println(searchGenre);
         String searchDate = date.getValue().toString().substring(0, 4);
-        System.out.println(searchDate);
         String searchPriceMin = priceMin.getText();
         String searchPriceMax = priceMax.getText();
-        System.out.println(searchPriceMin + " | " + searchPriceMax);
+        if (leboncoin.isSelected()) {
+            ScrapLeboncoin(searchTitle, searchPriceMin, searchPriceMax);
+        }
+        if (vinylcorner.isSelected()) {
+            ScrapVinylCorner(searchTitle);
+        }
+    }
+
+    public void ScrapLeboncoin(String searchTitle, String searchPriceMin, String searchPriceMax) {
+        if (searchTitle.contains(" ")) {
+            searchTitle = searchTitle.replace(" ", "%20");
+        }
+        String url = "https://leboncoin.fr/recherche?category=26&text=" + searchTitle + "&price=" + searchPriceMin + "-" + searchPriceMax;
+
+        try {
+            WebClient webClient = new WebClient();
+
+            webClient.getOptions().setUseInsecureSSL(true);
+            webClient.getOptions().setCssEnabled(false);
+            webClient.getOptions().setJavaScriptEnabled(false);
+            HtmlPage htmlPage = webClient.getPage(url);
+            List<HtmlElement> li = htmlPage.getByXPath("//div[2]/div[1]/p");
+            String res = "";
+            for (HtmlElement e : li) {
+                HtmlPage htmlPage1 = webClient.getPage(e.click().getUrl());
+                String nomArticle = "";
+                String prixArticle = "";
+                String description = "";
+
+                List<HtmlElement> nom = htmlPage1.getByXPath("//div[3]/div/div/h1");
+                List<HtmlElement> prix = htmlPage1.getByXPath("//div[3]/div/span//div/div[1]/div/span");
+                List<HtmlElement> desc = htmlPage1.getByXPath("//div[5]/div/div/p");
+                for (HtmlElement n : nom) {
+                    nomArticle = n.getTextContent();
+                }
+                for (HtmlElement p : prix) {
+                    prixArticle = p.getTextContent();
+                    prixArticle = prixArticle.replace("\u00a0", "");
+                }
+                for (HtmlElement d : desc) {
+                    description = d.getTextContent();
+                }
+                res += "Article : " + nomArticle +
+                        "\n Prix : " + prixArticle +
+                        "\n Description de l'article : " + description +
+                        "\n lien : " + htmlPage1.getUrl() +
+                        "\n--------------------------------------------------------------------\n";
+            }
+            this.result.setText(res);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void ScrapVinylCorner(String searchTitle) {
+        String url = "https://www.vinylcorner.fr/recherche?controller=search&s=" + searchTitle;
+
+        try {
+            WebClient webClient = new WebClient();
+
+            webClient.getOptions().setUseInsecureSSL(true);
+            webClient.getOptions().setCssEnabled(false);
+            webClient.getOptions().setJavaScriptEnabled(false);
+            HtmlPage htmlPage = webClient.getPage(url);
+            String res = "";
+            List<HtmlAnchor> li = (htmlPage.getAnchors());
+            List<HtmlElement> general = htmlPage.getByXPath("//h2/a[@href]");
+
+            for (HtmlElement e : li) {
+
+                for (HtmlElement gr : general) {
+                    String nomAlbum = "";
+                    String prixArticle = "";
+                    String desc = "";
+                    String year = "";
+                    HtmlPage htmlPage1 = webClient.getPage(gr.click().getUrl());
+
+
+                    List<HtmlElement> album = htmlPage1.getByXPath("//h2[@class='artist']");
+                    List<HtmlElement> prix = htmlPage1.getByXPath("//span[@itemprop='price']");
+                    List<HtmlElement> description = htmlPage1.getByXPath("//p[@class='product-info']");
+                    List<HtmlElement> date = htmlPage1.getByXPath("//strong");
+                    for (HtmlElement alb : album) {
+                        nomAlbum = alb.getTextContent();
+                        System.out.println(nomAlbum);
+                    }
+                    for (HtmlElement px : prix) {
+                        prixArticle = px.getTextContent();
+                        System.out.println(prixArticle);
+                    }
+                    for (HtmlElement d : description) {
+                        desc = d.getTextContent();
+                        System.out.println(desc);
+                    }
+                    for (HtmlElement dt : date) {
+                        year = dt.getTextContent();
+                        System.out.println(year);
+                    }
+                    res += "Article : " + nomAlbum +
+                            "\n Prix : " + prixArticle +
+                            "\n Description de l'article : " + description +
+                            "\n Année : " + year +
+                            "\n lien : " + htmlPage1.getUrl() +
+                            "\n--------------------------------------------------------------------\n";
+                }
+                System.out.println(res);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
