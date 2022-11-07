@@ -113,7 +113,7 @@ public class Controller {
         leboncoin.setSelected(false);
         mesvinyles.setSelected(false);
         culturefactory.setSelected(false);
-    };
+    }
 
     @FXML
     protected void close() {
@@ -188,8 +188,8 @@ public class Controller {
         String searchTitle = title.getText();
         String searchGenre = genre.getValue();
         String searchDate = date.getValue().toString().substring(0, 4);
-        String searchPriceMin = priceMin.getText();
-        String searchPriceMax = priceMax.getText();
+        double searchPriceMin = Double.parseDouble(priceMin.getText());
+        double searchPriceMax = Double.parseDouble(priceMax.getText());
         if (leboncoin.isSelected()) {
             ScrapLeboncoin(searchTitle, searchPriceMin, searchPriceMax);
         }
@@ -198,73 +198,109 @@ public class Controller {
         }
     }
 
-    public void ScrapLeboncoin(String searchTitle, String searchPriceMin, String searchPriceMax) {
+    public String ScrapLeboncoin(String searchTitle, double searchPriceMin, double searchPriceMax) {
         if (searchTitle.contains(" ")) {
             searchTitle = searchTitle.replace(" ", "%20");
         }
+        String res = "Résultats Le Bon Coin :\n";
         String url = "https://leboncoin.fr/recherche?category=26&text=" + searchTitle + "&price=" + searchPriceMin + "-" + searchPriceMax;
 
         try {
             WebClient webClient = new WebClient();
-
             webClient.getOptions().setUseInsecureSSL(true);
             webClient.getOptions().setCssEnabled(false);
             webClient.getOptions().setJavaScriptEnabled(false);
-            HtmlPage htmlPage = webClient.getPage(url);
-            List<HtmlElement> li = htmlPage.getByXPath("//div[2]/div[1]/p");
-            String res = "";
-            for (HtmlElement e : li) {
-                HtmlPage htmlPage1 = webClient.getPage(e.click().getUrl());
-                String nomArticle = "";
-                String prixArticle = "";
-                String description = "";
+            HtmlPage htmlPage1 = webClient.getPage(url);
 
-                List<HtmlElement> nom = htmlPage1.getByXPath("//div[3]/div/div/h1");
-                List<HtmlElement> prix = htmlPage1.getByXPath("//div[3]/div/span//div/div[1]/div/span");
-                List<HtmlElement> desc = htmlPage1.getByXPath("//div[5]/div/div/p");
-                for (HtmlElement n : nom) {
-                    nomArticle = n.getTextContent();
+            List<HtmlAnchor> produits = htmlPage1.getByXPath("//p");
+            for (HtmlElement prod : produits) {
+                String article = prod.getTextContent();
+                if (article.toLowerCase().contains(searchTitle.toLowerCase())) {
+                    HtmlPage htmlPage2 = prod.click();
+                    List<HtmlElement> desc = htmlPage2.getByXPath("//div[5]/div/div/p");
+                    List<HtmlElement> price = htmlPage2.getByXPath("//div[3]/div/span/div/div[1]/div/span");
+                    for (HtmlElement p : price) {
+                        String prodPrice = p.getTextContent();
+                        for (HtmlElement d : desc) {
+                            String prodDesc = d.getTextContent();
+                            res += "Article : " + prod + "\n" +
+                                    "Prix : " + prodPrice + "\n" +
+                                    "Description : " + prodDesc +
+                                    "URL : " + htmlPage2.getUrl() + "\n" +
+                                    "_______________________________________";
+                        }
+                    }
                 }
-                for (HtmlElement p : prix) {
-                    prixArticle = p.getTextContent();
-                    prixArticle = prixArticle.replace("\u00a0", "");
-                }
-                for (HtmlElement d : desc) {
-                    description = d.getTextContent();
-                }
-                res += "Article : " + nomArticle +
-                        "\n Prix : " + prixArticle +
-                        "\n Description de l'article : " + description +
-                        "\n lien : " + htmlPage1.getUrl() +
-                        "\n--------------------------------------------------------------------\n";
             }
-            this.result.setText(res);
-
+            System.out.println(res);
+            if (res.equals("")) {
+                res = "La recherche sur Le Bon Coin n'a rien donnée.";
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return res;
     }
 
-    public void ScrapVinylCorner(String searchTitle) {
-
-        String url = "https://www.vinylcorner.fr/recherche?controller=search&s=" + searchTitle;
+    public String ScrapCultureFactory(String searchTitle, double searchPriceMin, double searchPriceMax) {
+        if (searchTitle.contains(" ")) {
+            searchTitle = searchTitle.replace(" ", "%+");
+        }
+        String res = "Résultats Culture Factory :\n";
+        String url = "https://culturefactory.fr/recherche?controller=search&s=" + searchTitle + "&price=" + searchPriceMin + "-" + searchPriceMax;
 
         try {
-            PrintWriter ecrire;
-            File rep = new File("Resultat");
-            rep.mkdir();
+            WebClient webClient = new WebClient();
+            webClient.getOptions().setUseInsecureSSL(true);
+            webClient.getOptions().setCssEnabled(false);
+            webClient.getOptions().setJavaScriptEnabled(false);
+            HtmlPage htmlPage1 = webClient.getPage(url);
 
-            String nomFichier = "Resultat" + File.separator + searchTitle + ".txt";
+            List<HtmlAnchor> produits = htmlPage1.getByXPath("//p");
+            for (HtmlElement prod : produits) {
+                String article = prod.getTextContent();
+                if (article.toLowerCase().contains(searchTitle.toLowerCase())) {
+                    HtmlPage htmlPage2 = prod.click();
+                    List<HtmlElement> desc = htmlPage2.getByXPath("//div[5]/div/div/p");
+                    List<HtmlElement> price = htmlPage2.getByXPath("//div[3]/div/span/div/div[1]/div/span");
+                    for (HtmlElement p : price) {
+                        String prodPrice = p.getTextContent();
+                        for (HtmlElement d : desc) {
+                            String prodDesc = d.getTextContent();
+                            res += "Article : " + prod + "\n" +
+                                    "Prix : " + prodPrice + "\n" +
+                                    "Description : " + prodDesc +
+                                    "URL : " + htmlPage2.getUrl() + "\n" +
+                                    "_______________________________________";
+                        }
+                    }
+                }
+            }
+            System.out.println(res);
+            if (res.equals("")) {
+                res = "La recherche sur Le Bon Coin n'a rien donnée.";
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
 
-            ecrire = new PrintWriter(new BufferedWriter(new FileWriter(nomFichier)));
+    public String ScrapVinylCorner(String searchTitle) throws IOException {
+        if (searchTitle.contains(" ")) {
+            searchTitle = searchTitle.replace(" ", "+");
+        }
 
+        String res = "";
+        String url = "https://www.vinylcorner.fr/recherche?controller=search&s=" + searchTitle.toLowerCase();
+
+        try {
             WebClient webClient = new WebClient();
 
             webClient.getOptions().setUseInsecureSSL(true);
             webClient.getOptions().setCssEnabled(false);
             webClient.getOptions().setJavaScriptEnabled(false);
             HtmlPage htmlPage = webClient.getPage(url);
-            String res = "";
             List<HtmlElement> liens = htmlPage.getByXPath("//h2/a");
             for (HtmlElement e : liens) {
                 String nomAlbum = "";
@@ -280,26 +316,21 @@ public class Controller {
                 List<HtmlElement> date = prodPage.getByXPath("//strong");
 
                 System.out.println(urlProd);
-                ecrire.println(urlProd);
                 for (HtmlElement t : title) {
                     nomAlbum = t.getTextContent();
                     System.out.println(t.getTextContent());
-                    ecrire.println(t.getTextContent());
                 }
                 for (HtmlElement p : price) {
                     prixArticle = p.getTextContent();
                     System.out.println(p.getTextContent());
-                    ecrire.println(p.getTextContent());
                 }
                 for (HtmlElement de : desc) {
                     description = de.getTextContent();
                     System.out.println(de.getTextContent());
-                    ecrire.println(de.getTextContent());
                 }
                 for (HtmlElement da : date) {
                     year = da.getTextContent();
                     System.out.println(da.getTextContent());
-                    ecrire.println(da.getTextContent());
                 }
                 res += "Titre : " + nomAlbum +
                         "\nPrix : " + prixArticle +
@@ -308,12 +339,11 @@ public class Controller {
                         "\nlien : " + prodPage.getUrl() +
                         "\n--------------------------------------------------------------------\n";
                 System.out.println();
-                ecrire.println();
             }
-            ecrire.close();
-            this.result.setText(res);
+            System.out.println(res);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return res;
     }
 }
