@@ -12,12 +12,13 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="607.0" prefWidth="662.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projet_2.Controller">
+<VBox prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projet_2.Controller">
    <children>
       <MenuBar prefHeight="0.0" prefWidth="467.0">
         <menus>
@@ -57,13 +58,13 @@
             <AnchorPane layoutX="15.333333015441895" maxWidth="350.0" minWidth="350.0" prefWidth="350.0">
                <children>
                   <Label layoutY="5.0" text="Titre" />
-                  <TextField fx:id="title" layoutX="58.0" layoutY="1.0" promptText="Sélectionnez un titre" />
+                  <TextField fx:id="title" layoutX="58.0" layoutY="1.0" prefHeight="25.0" prefWidth="175.0" promptText="Sélectionnez un titre" />
                </children>
             </AnchorPane>
             <AnchorPane layoutX="15.333333015441895" layoutY="52.00000762939453" maxWidth="350.0" minWidth="350.0" prefWidth="350.0">
                <children>
                   <Label layoutY="5.0" text="Genre" />
-                  <ComboBox fx:id="genre" layoutX="60.0" layoutY="1.0" prefWidth="150.0" promptText="Sélectionnez un genre">
+                  <ComboBox fx:id="genre" layoutX="60.0" layoutY="1.0" prefHeight="25.0" prefWidth="175.0" promptText="Sélectionnez un genre">
                       <items>
                           <FXCollections fx:factory="observableArrayList">
                               <String fx:value="Rock" />
@@ -94,7 +95,7 @@
                   <Label layoutX="215.0" layoutY="5.0" text="€" />
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="436.0" layoutY="15.0">
+            <AnchorPane layoutX="515.0" layoutY="14.0">
                <children>
                   <CheckBox fx:id="discogs" mnemonicParsing="false" text="Discogs.com">
                      <padding>
@@ -128,11 +129,11 @@
             <Button fx:id="erase" layoutX="184.0" layoutY="206.0" mnemonicParsing="false" onAction="#clean" text="Effacer" />
          </children>
       </AnchorPane>
-      <ProgressBar prefHeight="18.0" prefWidth="666.0" progress="0.0">
+      <ProgressBar prefHeight="18.0" prefWidth="702.0" progress="0.0">
          <VBox.margin>
             <Insets top="20.0" />
          </VBox.margin>
       </ProgressBar>
-      <Label fx:id="result" text="Label" />
+      <TextArea fx:id="result" editable="false" prefHeight="245.0" prefWidth="700.0" />
    </children>
 </VBox>

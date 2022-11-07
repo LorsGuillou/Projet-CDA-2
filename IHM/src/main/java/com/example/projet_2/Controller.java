@@ -15,8 +15,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
 public class Controller {
@@ -60,7 +59,7 @@ public class Controller {
     private Button erase;
 
     @FXML
-    private Label result;
+    private TextArea result;
 
     @FXML
     private MenuItem saveOne;
@@ -247,9 +246,18 @@ public class Controller {
     }
 
     public void ScrapVinylCorner(String searchTitle) {
+
         String url = "https://www.vinylcorner.fr/recherche?controller=search&s=" + searchTitle;
 
         try {
+            PrintWriter ecrire;
+            File rep = new File("Resultat");
+            rep.mkdir();
+
+            String nomFichier = "Resultat" + File.separator + searchTitle + ".txt";
+
+            ecrire = new PrintWriter(new BufferedWriter(new FileWriter(nomFichier)));
+
             WebClient webClient = new WebClient();
 
             webClient.getOptions().setUseInsecureSSL(true);
@@ -257,48 +265,53 @@ public class Controller {
             webClient.getOptions().setJavaScriptEnabled(false);
             HtmlPage htmlPage = webClient.getPage(url);
             String res = "";
-            List<HtmlAnchor> li = (htmlPage.getAnchors());
-            List<HtmlElement> general = htmlPage.getByXPath("//h2/a[@href]");
+            List<HtmlElement> liens = htmlPage.getByXPath("//h2/a");
+            for (HtmlElement e : liens) {
+                String nomAlbum = "";
+                String prixArticle = "";
+                String description = "";
+                String year = "";
+                String value = e.getAttribute("href");
+                String urlProd = "https://www.vinylcorner.fr" + value;
+                HtmlPage prodPage = e.click();
+                List<HtmlElement> title = prodPage.getByXPath("//h2[@class='artist']");
+                List<HtmlElement> price = prodPage.getByXPath("//span[@itemprop='price']");
+                List<HtmlElement> desc = prodPage.getByXPath("//p[@class='product-info']");
+                List<HtmlElement> date = prodPage.getByXPath("//strong");
 
-            for (HtmlElement e : li) {
-
-                for (HtmlElement gr : general) {
-                    String nomAlbum = "";
-                    String prixArticle = "";
-                    String desc = "";
-                    String year = "";
-                    HtmlPage htmlPage1 = webClient.getPage(gr.click().getUrl());
-
-
-                    List<HtmlElement> album = htmlPage1.getByXPath("//h2[@class='artist']");
-                    List<HtmlElement> prix = htmlPage1.getByXPath("//span[@itemprop='price']");
-                    List<HtmlElement> description = htmlPage1.getByXPath("//p[@class='product-info']");
-                    List<HtmlElement> date = htmlPage1.getByXPath("//strong");
-                    for (HtmlElement alb : album) {
-                        nomAlbum = alb.getTextContent();
-                        System.out.println(nomAlbum);
-                    }
-                    for (HtmlElement px : prix) {
-                        prixArticle = px.getTextContent();
-                        System.out.println(prixArticle);
-                    }
-                    for (HtmlElement d : description) {
-                        desc = d.getTextContent();
-                        System.out.println(desc);
-                    }
-                    for (HtmlElement dt : date) {
-                        year = dt.getTextContent();
-                        System.out.println(year);
-                    }
-                    res += "Article : " + nomAlbum +
-                            "\n Prix : " + prixArticle +
-                            "\n Description de l'article : " + description +
-                            "\n Année : " + year +
-                            "\n lien : " + htmlPage1.getUrl() +
-                            "\n--------------------------------------------------------------------\n";
+                System.out.println(urlProd);
+                ecrire.println(urlProd);
+                for (HtmlElement t : title) {
+                    nomAlbum = t.getTextContent();
+                    System.out.println(t.getTextContent());
+                    ecrire.println(t.getTextContent());
                 }
-                System.out.println(res);
+                for (HtmlElement p : price) {
+                    prixArticle = p.getTextContent();
+                    System.out.println(p.getTextContent());
+                    ecrire.println(p.getTextContent());
+                }
+                for (HtmlElement de : desc) {
+                    description = de.getTextContent();
+                    System.out.println(de.getTextContent());
+                    ecrire.println(de.getTextContent());
+                }
+                for (HtmlElement da : date) {
+                    year = da.getTextContent();
+                    System.out.println(da.getTextContent());
+                    ecrire.println(da.getTextContent());
+                }
+                res += "Titre : " + nomAlbum +
+                        "\nPrix : " + prixArticle +
+                        "\nDescription de l'article : " + description +
+                        "\nAnnée : " + year +
+                        "\nlien : " + prodPage.getUrl() +
+                        "\n--------------------------------------------------------------------\n";
+                System.out.println();
+                ecrire.println();
             }
+            ecrire.close();
+            this.result.setText(res);
         } catch (IOException e) {
             e.printStackTrace();
         }
