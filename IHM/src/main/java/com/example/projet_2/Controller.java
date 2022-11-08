@@ -522,9 +522,13 @@ public class Controller {
         File rep = new File("Recherche");
         rep.mkdir();
 
-        String nameFile = "Recherche" + File.separator + title.getText() + ".txt";
+        String nameFile = "Recherche" + File.separator + "Resultat.txt";
         writer = new PrintWriter(new BufferedWriter(new FileWriter(nameFile)));
         writer.println(result.getText());
         writer.close();
+    }
+
+    public void sendMail() throws Exception {
+
     }
 }

@@ -35,7 +35,7 @@ public class Mail {
 //    }
         try {
 //      TODO transfert fichier
-            String path = "search.txt";
+            String path = "Resultat.txt";
             PrintWriter ecrire = new PrintWriter(new BufferedWriter
                     (new FileWriter(path)));
             ecrire.println(search);
@@ -55,7 +55,7 @@ public class Mail {
             replyTo.setName("John Doe");
             SendSmtpEmailAttachment attachment = new SendSmtpEmailAttachment();
             attachment.setName("search.txt");
-            byte[] encode = Files.readAllBytes(Paths.get("search.txt"));
+            byte[] encode = Files.readAllBytes(Paths.get("Resultat.txt"));
             attachment.setContent(encode);
             List<SendSmtpEmailAttachment> attachmentList = new ArrayList<SendSmtpEmailAttachment>();
             attachmentList.add(attachment);
