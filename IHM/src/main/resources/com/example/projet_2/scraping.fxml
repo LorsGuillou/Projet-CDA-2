@@ -24,7 +24,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="Fichier">
             <items>
-              <MenuItem fx:id="saveOne" mnemonicParsing="false" text="Enregistrer dans un fichier" />
+              <MenuItem fx:id="saveOne" mnemonicParsing="false" onAction="#saveSearch" text="Enregistrer dans un fichier" />
                   <MenuItem fx:id="send" mnemonicParsing="false" onAction="#mailPopup" text="Envoi Courriel" />
                   <MenuItem fx:id="saveTwo" mnemonicParsing="false" onAction="#dbPopup" text="Enregistrer dans la base de données" />
                   <MenuItem fx:id="exit" mnemonicParsing="false" onAction="#close" text="Quitter" />

@@ -516,4 +516,15 @@ public class Controller {
         }
         return res;
     }
+
+    public void saveSearch () throws Exception {
+        PrintWriter writer;
+        File rep = new File("Recherche");
+        rep.mkdir();
+
+        String nameFile = "Recherche" + File.separator + title.getText() + ".txt";
+        writer = new PrintWriter(new BufferedWriter(new FileWriter(nameFile)));
+        writer.println(result.getText());
+        writer.close();
+    }
 }
