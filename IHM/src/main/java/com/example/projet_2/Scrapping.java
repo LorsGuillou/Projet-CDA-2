@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Scrapping {
 
-    public static ArrayList<ArrayList<String>> ScrapDiscogs(String searchTitle, double searchPriceMin, double searchPriceMax, int searchYear, String searchGenre) {
+    public static ArrayList<ArrayList<String>> ScrapDiscogs(String searchTitle, String searchGenre, double searchPriceMin, double searchPriceMax, int searchYear) {
         ArrayList<ArrayList<String>> finalRes = new ArrayList<>();
         if (searchGenre.equals("Funk") || searchGenre.equals("Soul")) {
             searchGenre = "Funk+%2F+Soul";
@@ -48,6 +48,7 @@ public class Scrapping {
                             if (prodPriceDouble <= searchPriceMax && prodPriceDouble >= searchPriceMin) {
                                 ArrayList<String> res = new ArrayList<>();
                                 res.add(article);
+                                res.add(searchGenre);
                                 if (!desc.isEmpty()) {
                                     res.add(desc.get(0).getTextContent());
                                 } else {
@@ -69,7 +70,7 @@ public class Scrapping {
         return finalRes;
     }
 
-    public static ArrayList<ArrayList<String>> ScrapFnac(String searchTitle, double searchPriceMin, double searchPriceMax, int searchYear) {
+    public static ArrayList<ArrayList<String>> ScrapFnac(String searchTitle, String searchGenre, double searchPriceMin, double searchPriceMax, int searchYear) {
         ArrayList<ArrayList<String>> finalRes = new ArrayList<>();
         String url = "https://www.fnac.com/SearchResult/ResultList.aspx?SCat=0&Search=" + searchTitle;
 
@@ -97,6 +98,7 @@ public class Scrapping {
                     if (prodPriceDouble <= searchPriceMax && prodPriceDouble >= searchPriceMin) {
                         ArrayList<String> res = new ArrayList<>();
                         res.add(article);
+                        res.add(searchGenre);
                         if (!desc.isEmpty()) {
                             res.add(desc.get(0).getTextContent());
                         } else {
@@ -115,7 +117,7 @@ public class Scrapping {
         return finalRes;
     }
 
-    public static ArrayList<ArrayList<String>> ScrapVinylCorner(String searchTitle, double searchPriceMin, double searchPriceMax, int searchYear, String searchGenre) {
+    public static ArrayList<ArrayList<String>> ScrapVinylCorner(String searchTitle, String searchGenre, double searchPriceMin, double searchPriceMax, int searchYear) {
         if (searchTitle.contains(" ")) {
             searchTitle = searchTitle.replace(" ", "+");
         }
@@ -152,6 +154,7 @@ public class Scrapping {
                                 if ((prodPriceDouble <= searchPriceMax && prodPriceDouble >= searchPriceMin)) {
                                     ArrayList<String> res = new ArrayList<>();
                                     res.add(article);
+                                    res.add(searchGenre);
                                     if (!desc.isEmpty()) {
                                         res.add(desc.get(0).getTextContent());
                                     } else {
@@ -164,6 +167,11 @@ public class Scrapping {
                                 }
                             }
                         }
+                    } else {
+                        ArrayList<String> empty = new ArrayList<>();
+                        String nothing = "La recherche sur Vinyl Corner n'a rien donnée.";
+                        empty.add(nothing);
+                        finalRes.add(empty);
                     }
                 }
             }
@@ -173,7 +181,7 @@ public class Scrapping {
         return finalRes;
     }
 
-    public static ArrayList<ArrayList<String>> ScrapLeboncoin(String searchTitle, double searchPriceMin, double searchPriceMax) {
+    public static ArrayList<ArrayList<String>> ScrapLeboncoin(String searchTitle, String searchGenre, double searchPriceMin, double searchPriceMax) {
         if (searchTitle.contains(" ")) {
             searchTitle = searchTitle.replace(" ", "%20");
         }
@@ -200,6 +208,7 @@ public class Scrapping {
                             String prodDesc = d.getTextContent();
                             ArrayList<String> res = new ArrayList<>();
                             res.add(article);
+                            res.add(searchGenre);
                             if (!desc.isEmpty()) {
                                 res.add(prodDesc);
                             } else {
@@ -219,7 +228,7 @@ public class Scrapping {
         return finalRes;
     }
 
-    public static ArrayList<ArrayList<String>> ScrapMesvinyles(String searchTitle, double searchPriceMin, double searchPriceMax, int searchYear) {
+    public static ArrayList<ArrayList<String>> ScrapMesvinyles(String searchTitle, String searchGenre, double searchPriceMin, double searchPriceMax, int searchYear) {
 
         ArrayList<ArrayList<String>> finalRes = new ArrayList<>();
         String url = "https://mesvinyles.fr/fr/recherche?controller=search&s=" + searchTitle;
@@ -255,6 +264,7 @@ public class Scrapping {
                                 if ((prodPriceDouble <= searchPriceMax && prodPriceDouble >= searchPriceMin)) {
                                     ArrayList<String> res = new ArrayList<>();
                                     res.add(article);
+                                    res.add(searchGenre);
                                     res.add("--");
                                     res.add(prodPrice);
                                     res.add(yearString);
@@ -272,7 +282,7 @@ public class Scrapping {
         return finalRes;
     }
 
-    public static ArrayList<ArrayList<String>> ScrapCultureFactory(String searchTitle, double searchPriceMin, double searchPriceMax) {
+    public static ArrayList<ArrayList<String>> ScrapCultureFactory(String searchTitle, String searchGenre, double searchPriceMin, double searchPriceMax) {
         if (searchTitle.contains(" ")) {
             searchTitle = searchTitle.replace(" ", "%+");
         }
@@ -301,6 +311,7 @@ public class Scrapping {
                         if (prodPriceDouble <= searchPriceMax && prodPriceDouble >= searchPriceMin) {
                             ArrayList<String> res = new ArrayList<>();
                             res.add(article);
+                            res.add(searchGenre);
                             if (!desc.isEmpty()) {
                                 res.add(desc.get(0).getTextContent());
                             } else {

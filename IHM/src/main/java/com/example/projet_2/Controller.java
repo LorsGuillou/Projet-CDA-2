@@ -23,6 +23,8 @@ import java.util.List;
 public class Controller {
 
     private ArrayList<ArrayList<String>> products = new ArrayList<>();
+
+    private BDD bdd = new BDD();
     @FXML
     private TextField title;
 
@@ -82,6 +84,21 @@ public class Controller {
 
     @FXML
     private MenuItem notice;
+
+    @FXML
+    private TextField dbAdresse;
+
+    @FXML
+    private TextField dbName;
+
+    @FXML
+    private TextField dbPort;
+
+    @FXML
+    private TextField dbLogin;
+
+    @FXML
+    private TextField dbPwd;
 
     @FXML
     private Button dbSend;
@@ -165,6 +182,7 @@ public class Controller {
         Label label2 = new Label("Cliquez sur Valider pour lancer la transmission :");
         Button button1 = new Button("Valider");
         Button button2 = new Button("Annuler");
+        button1.setOnAction(event -> saveInDb());
         button2.setOnAction(event -> popupdb.close());
         VBox layout = new VBox(10);
         layout.getChildren().addAll(label1, label2, button1, button2);
@@ -193,10 +211,11 @@ public class Controller {
         String res = "";
         for (int i = 0; i < products.size(); i++) {
                 res += "Article : " + products.get(i).get(0) + "\n"
-                        + "Description : " + products.get(i).get(1) + "\n"
-                        + "Prix : " + products.get(i).get(2) + "\n"
-                        + "Annee : " + products.get(i).get(3) + "\n"
-                        + "URL : " + products.get(i).get(4) + "\n";
+                        + "Genre : " + products.get(i).get(1) + "\n"
+                        + "Description : " + products.get(i).get(2) + "\n"
+                        + "Prix : " + products.get(i).get(3) + "\n"
+                        + "Annee : " + products.get(i).get(4) + "\n"
+                        + "URL : " + products.get(i).get(5) + "\n";
         }
         return res;
     }
@@ -208,22 +227,22 @@ public class Controller {
         double searchPriceMin = Double.parseDouble(priceMin.getText());
         double searchPriceMax = Double.parseDouble(priceMax.getText());
         if (discogs.isSelected()) {
-            products.addAll(Scrapping.ScrapDiscogs(searchTitle, searchPriceMin, searchPriceMax, searchDate, searchGenre));
+            products.addAll(Scrapping.ScrapDiscogs(searchTitle, searchGenre, searchPriceMin, searchPriceMax, searchDate));
         }
         if (fnac.isSelected()) {
-            products.addAll(Scrapping.ScrapFnac(searchTitle, searchPriceMin, searchPriceMax, searchDate));
+            products.addAll(Scrapping.ScrapFnac(searchTitle, searchGenre, searchPriceMin, searchPriceMax, searchDate));
         }
         if (vinylcorner.isSelected()) {
-            products.addAll(Scrapping.ScrapVinylCorner(searchTitle, searchPriceMin, searchPriceMax, searchDate, searchGenre));
+            products.addAll(Scrapping.ScrapVinylCorner(searchTitle, searchGenre, searchPriceMin, searchPriceMax, searchDate));
         }
         if (leboncoin.isSelected()) {
-            products.addAll(Scrapping.ScrapLeboncoin(searchTitle, searchPriceMin, searchPriceMax));
+            products.addAll(Scrapping.ScrapLeboncoin(searchTitle, searchGenre, searchPriceMin, searchPriceMax));
         }
         if (mesvinyles.isSelected()) {
-            products.addAll(Scrapping.ScrapMesvinyles(searchTitle, searchPriceMin, searchPriceMax, searchDate));
+            products.addAll(Scrapping.ScrapMesvinyles(searchTitle, searchGenre, searchPriceMin, searchPriceMax, searchDate));
         }
         if (culturefactory.isSelected()) {
-            products.addAll(Scrapping.ScrapCultureFactory(searchTitle, searchPriceMin, searchPriceMax));
+            products.addAll(Scrapping.ScrapCultureFactory(searchTitle, searchGenre, searchPriceMin, searchPriceMax));
         }
         System.out.println(writeResult());
         System.out.println(products);
@@ -243,5 +262,22 @@ public class Controller {
             writer.println(result.getText());
             writer.close();
         }
+    }
+
+    public void connectToBdd() throws Exception {
+        String pwd = dbPwd.getText();
+        if (dbPwd.getText().isEmpty()) {
+            pwd = "";
+        }
+        bdd.setAdresse(dbAdresse.getText());
+        bdd.setPort(dbPort.getText());
+        bdd.setBdd(dbName.getText());
+        bdd.setUser(dbLogin.getText());
+        bdd.setPwd(pwd);
+        bdd.connect();
+    }
+
+    public void saveInDb() {
+        bdd.sendToDB(products);
     }
 }
