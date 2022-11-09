@@ -21,20 +21,11 @@ public class Mail {
         Dotenv dotenv = Dotenv.load();
         ApiClient defaultClient = Configuration.getDefaultApiClient();
 
-        // Configure API key authorization: api-key
         ApiKeyAuth apiKey = (ApiKeyAuth) defaultClient.getAuthentication("api-key");
         apiKey.setApiKey(dotenv.get("API_SENDINBLUE"));
 
         AccountApi apiInstance = new AccountApi();
-//    try {
-//      GetAccount result = apiInstance.getAccount();
-//      System.out.println(result);
-//    } catch (ApiException e) {
-//      System.err.println("Exception when calling AccountApi#getAccount");
-//      e.printStackTrace();
-//    }
         try {
-//      TODO transfert fichier
             String path = "Resultat.txt";
             PrintWriter ecrire = new PrintWriter(new BufferedWriter
                     (new FileWriter(path)));
@@ -67,7 +58,7 @@ public class Mail {
             SendSmtpEmail sendSmtpEmail = new SendSmtpEmail();
             sendSmtpEmail.setSender(sender);
             sendSmtpEmail.setTo(toList);
-            sendSmtpEmail.setHtmlContent("<html><body><h1>This is my first transactional email {{params.parameter}}</h1></body></html>");
+            sendSmtpEmail.setHtmlContent("<html><body><h1>Voici le résultat de la recherche de vinyl {{params.parameter}}</h1></body></html>");
             sendSmtpEmail.setSubject("{{params.subject}}");
             sendSmtpEmail.setReplyTo(replyTo);
             sendSmtpEmail.setAttachment(attachmentList);
@@ -78,7 +69,6 @@ public class Mail {
             System.out.println(response.toString());
 
         } catch (Exception e) {
-
             e.printStackTrace();
         }
     }
