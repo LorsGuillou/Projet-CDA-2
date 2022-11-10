@@ -40,7 +40,7 @@
                 </div>
             </div>
             <div id="logo">
-                <a href="./index.php?acion=home">
+                <a href="./index.php?action=home">
                     <img src="./app/Front/style/img/best-music.png">
                 </a>
             </div>

@@ -180,7 +180,7 @@ public class Controller {
         }
     }
 
-
+    // Génération de la fenêtre pour confirmer l'envoi à la base de données
     public void dbPopup() throws IOException {
         Stage popupdb = new Stage();
         popupdb.initModality(Modality.APPLICATION_MODAL);
@@ -199,6 +199,7 @@ public class Controller {
         popupdb.showAndWait();
     }
 
+    // Génération de la fenêtre du mode d'emploi
     public void noticePopup() throws Exception {
         Stage popup = new Stage();
         popup.initModality(Modality.APPLICATION_MODAL);
@@ -219,6 +220,7 @@ public class Controller {
         popup.showAndWait();
     }
 
+    // Fonctions pour ouvrir la fenêtre BDD à partir de l'IHM
     @FXML
     protected void dbAccess() {
         try {
@@ -228,25 +230,33 @@ public class Controller {
         }
     }
 
+    // Ferme une fenêtre
     @FXML
     protected void exitWindow() {
         Stage stage = (Stage) dbClose.getScene().getWindow();
         stage.close();
     }
 
+    // Formatage des données récupérées par la scrapping pour affichage
     public String writeResult() {
         String res = "";
         for (int i = 0; i < products.size(); i++) {
+            if (!products.get(i).isEmpty()) {
                 res += "Article : " + products.get(i).get(0) + "\n"
                         + "Genre : " + products.get(i).get(1) + "\n"
                         + "Description : " + products.get(i).get(2) + "\n"
                         + "Prix : " + products.get(i).get(3) + "\n"
                         + "Annee : " + products.get(i).get(4) + "\n"
-                        + "URL : " + products.get(i).get(5) + "\n";
+                        + "URL : " + products.get(i).get(5) + "\n"
+                        + "=====================================\n";
+            } else {
+                res += "La recherhe n'a rien donnée.";
+            }
         }
         return res;
     }
 
+    // Lancement des méthodes de scrapping à partir des données récupérées dans l'IHM, puis affichage dans la zone de texte
     public void scrap() throws IOException {
         String searchTitle = title.getText();
         String searchGenre = genre.getValue();
@@ -254,52 +264,29 @@ public class Controller {
         double searchPriceMin = Double.parseDouble(priceMin.getText());
         double searchPriceMax = Double.parseDouble(priceMax.getText());
         if (discogs.isSelected()) {
-            if (!Scrapping.ScrapDiscogs(searchTitle, searchGenre, searchPriceMin, searchPriceMax, searchDate).isEmpty()) {
                 products.addAll(Scrapping.ScrapDiscogs(searchTitle, searchGenre, searchPriceMin, searchPriceMax, searchDate));
-            } else {
-                result.setText("La recherche sur Discogs n'a rien donnée.");
-            }
         }
         if (fnac.isSelected()) {
-            if (!Scrapping.ScrapFnac(searchTitle, searchGenre, searchPriceMin, searchPriceMax, searchDate).isEmpty()) {
                 products.addAll(Scrapping.ScrapFnac(searchTitle, searchGenre, searchPriceMin, searchPriceMax, searchDate));
-            } else {
-                result.setText("La recherche sur la Fnac n'a rien donnée.");
-            }
         }
         if (vinylcorner.isSelected()) {
-            if (!Scrapping.ScrapVinylCorner(searchTitle, searchGenre, searchPriceMin, searchPriceMax, searchDate).isEmpty()) {
                 products.addAll(Scrapping.ScrapVinylCorner(searchTitle, searchGenre, searchPriceMin, searchPriceMax, searchDate));
-            } else {
-                result.setText("La recherche sur Vinyl Corner n'a rien donnée.");
-            }
         }
         if (leboncoin.isSelected()) {
-            if (!Scrapping.ScrapLeboncoin(searchTitle, searchGenre, searchPriceMin, searchPriceMax).isEmpty()) {
                 products.addAll(Scrapping.ScrapLeboncoin(searchTitle, searchGenre, searchPriceMin, searchPriceMax));
-            } else {
-                result.setText("La recherche sur Le Bon Coin n'a rien donnée.");
-            }
         }
         if (mesvinyles.isSelected()) {
-            if (!Scrapping.ScrapMesvinyles(searchTitle, searchGenre, searchPriceMin, searchPriceMax, searchDate).isEmpty()) {
                 products.addAll(Scrapping.ScrapMesvinyles(searchTitle, searchGenre, searchPriceMin, searchPriceMax, searchDate));
-            } else {
-                result.setText("La recherche sur Mesvinyles n'a rien donnée.");
-            }
         }
         if (culturefactory.isSelected()) {
-            if (!Scrapping.ScrapCultureFactory(searchTitle, searchGenre, searchPriceMin, searchPriceMax).isEmpty()) {
                 products.addAll(Scrapping.ScrapCultureFactory(searchTitle, searchGenre, searchPriceMin, searchPriceMax));
-            } else {
-                result.setText("La recherche sur Culture Factory n'a rien donnée.");
-            }
         }
         System.out.println(writeResult());
         System.out.println(products);
         result.setText(writeResult());
     }
 
+    // Sauvegarde de la recherche dans un fichier texte dans un dossier à la racine
     public void saveSearch () throws Exception {
         if (result.getText().equals("")) {
             result.setText("Vous ne pouvez enregistrer une recherche vide.");
@@ -315,6 +302,7 @@ public class Controller {
         }
     }
 
+    // Connexion à la base de données par initiation d'un objet BDD
     public void connectToBdd() throws Exception {
         String pwd = dbPwd.getText();
         if (dbPwd.getText().isEmpty()) {
@@ -328,6 +316,7 @@ public class Controller {
         bdd.connect();
     }
 
+    // Sauvegarde de la recherche dans la base de données
     public void saveInDb() {
         bdd.sendToDB(products);
     }

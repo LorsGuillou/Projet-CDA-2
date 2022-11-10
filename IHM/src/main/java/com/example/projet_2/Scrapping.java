@@ -12,6 +12,11 @@ import java.util.List;
 
 public class Scrapping {
 
+    /*
+    * Méthodes de scrapping : chaque méthode parcours un site, et retourne les données dans un ArrayList<ArrayList<String>>.
+    * Si l'un des champs n'est pas trouvé sur le site, il sera remplacé par '--'.
+     */
+
     public static ArrayList<ArrayList<String>> ScrapDiscogs(String searchTitle, String searchGenre, double searchPriceMin, double searchPriceMax, int searchYear) {
         ArrayList<ArrayList<String>> finalRes = new ArrayList<>();
         if (searchGenre.equals("Funk") || searchGenre.equals("Soul")) {

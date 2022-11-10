@@ -69,7 +69,7 @@
       <AnchorPane prefHeight="33.0" prefWidth="476.0">
          <children>
             <Button fx:id="dbSend" layoutX="140.0" layoutY="4.0" mnemonicParsing="false" onAction="#connectToBdd" text="Valider" />
-            <Button fx:id="dbClose" layoutX="282.0" layoutY="4.0" mnemonicParsing="false" text="Fermer" />
+            <Button fx:id="dbClose" layoutX="282.0" layoutY="4.0" mnemonicParsing="false" onAction="#close" text="Fermer" />
          </children>
       </AnchorPane>
    </children>
