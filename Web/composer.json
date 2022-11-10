@@ -1,0 +1,17 @@
+{
+    "name": "greta2022/web",
+    "autoload": {
+        "psr-4": {
+            "Greta2022\\Web\\": "./Back"
+        }
+    },
+    "authors": [
+        {
+            "name": "laurent GUILLOU",
+            "email": "laurent.guillou29200@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.4"
+    }
+}

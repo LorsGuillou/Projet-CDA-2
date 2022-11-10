@@ -12,6 +12,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -106,6 +107,7 @@ public class Controller {
     @FXML
     private Button dbClose;
 
+    // Réinitialise la valeur du menu déroulant quand on appuie sur Effacer
     public void refreshComboBox() {
         genre.setButtonCell(new ListCell<>() {
             @Override
@@ -121,6 +123,7 @@ public class Controller {
     }
 
     @FXML
+    // Réinitialise tout les champs
     protected void clean() {
         title.setText("");
         genre.getSelectionModel().clearSelection();
@@ -137,10 +140,12 @@ public class Controller {
     }
 
     @FXML
+    // Ferme la fenêtre
     protected void close() {
         Platform.exit();
     }
 
+    // Génération de la fenêtre d'envoi de mail
     public void mailPopup() throws IOException {
         Stage popupmail = new Stage();
         popupmail.initModality(Modality.APPLICATION_MODAL);
@@ -160,6 +165,7 @@ public class Controller {
         popupmail.showAndWait();
     }
 
+    // Ouvre la fenêtre de paramétrage de la base de données
     public void dbScene() throws IOException {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -173,6 +179,7 @@ public class Controller {
             e.printStackTrace();
         }
     }
+
 
     public void dbPopup() throws IOException {
         Stage popupdb = new Stage();
@@ -190,6 +197,26 @@ public class Controller {
         Scene scene1 = new Scene(layout, 300, 250);
         popupdb.setScene(scene1);
         popupdb.showAndWait();
+    }
+
+    public void noticePopup() throws Exception {
+        Stage popup = new Stage();
+        popup.initModality(Modality.APPLICATION_MODAL);
+        popup.setTitle("Mode d'emploi");
+        Text text = new Text("Cette application a pour but de rechercher des vinyls sur plusieurs sites webs à la fois.\n" +
+                "Pour cela, dans le champ titre, rentrez le nom de l'artiste, puis sélectionnez le genre dans le menu déroulant.\n" +
+                "Pour l'année, ne prenez en compte que l'année, n'importe quelle date de l'année souhaitée fera l'affaire.\n" +
+                "Saisissez ensuite la plage de prix a rechercher, puis le site à visiter. Le résultat de la recherche s'affichera dans la zone du bas.\n" +
+                "Vous pouvez ensuite enregistrer le résultat de votre recherche dans Fichier->Enregistrer dans un fichier,\n" +
+                "ou envoyer la recherche directement par e-mail dans Fichier-Envoi Courriel.\n" +
+                "Vous pouvez également envoyez le résultat dans une base de données, en précisant ses informations dans Paramètres->Base de données\n" +
+                "puis en enregistrant avec Fichier->Enregistrer dans la base de données.");
+        VBox layout = new VBox(10);
+        layout.getChildren().addAll(text);
+        layout.setAlignment(Pos.CENTER);
+        Scene scene = new Scene(layout, 650, 200);
+        popup.setScene(scene);
+        popup.showAndWait();
     }
 
     @FXML

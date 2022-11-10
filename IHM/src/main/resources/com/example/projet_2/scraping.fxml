@@ -37,7 +37,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Aide">
             <items>
-              <MenuItem fx:id="notice" mnemonicParsing="false" text="Mode d'emploi" />
+              <MenuItem fx:id="notice" mnemonicParsing="false" onAction="#noticePopup" text="Mode d'emploi" />
             </items>
           </Menu>
         </menus>
