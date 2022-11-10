@@ -3,7 +3,7 @@
     <main id="indexMain" class="container">
         <section id="incontournables" class="container narrow">
             <h2 id="bigwhite">Les Incontournables du moment</h2>
-            <a href="#" class="indexContent">
+            <a href="./index.php?action=article" class="indexContent">
                 <article class="indexContentArticle">
                     <div class="indexContentImg">
                         <img src="./app/Front/style/img/beatles-abbey road.jpg">

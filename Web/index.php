@@ -15,8 +15,10 @@ try {
             $manager->home();
         } elseif ($_GET['action'] == 'page') {
             $manager->page();
-        } else if ($_GET['action'] == 'scrap') {
+        } elseif ($_GET['action'] == 'scrap') {
             $manager->scrap();
+        } elseif ($_GET['action'] == 'article') {
+            $manager->article();
         }
     } else {
         $manager->home();

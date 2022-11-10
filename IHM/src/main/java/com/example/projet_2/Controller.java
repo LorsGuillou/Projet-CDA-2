@@ -254,22 +254,46 @@ public class Controller {
         double searchPriceMin = Double.parseDouble(priceMin.getText());
         double searchPriceMax = Double.parseDouble(priceMax.getText());
         if (discogs.isSelected()) {
-            products.addAll(Scrapping.ScrapDiscogs(searchTitle, searchGenre, searchPriceMin, searchPriceMax, searchDate));
+            if (!Scrapping.ScrapDiscogs(searchTitle, searchGenre, searchPriceMin, searchPriceMax, searchDate).isEmpty()) {
+                products.addAll(Scrapping.ScrapDiscogs(searchTitle, searchGenre, searchPriceMin, searchPriceMax, searchDate));
+            } else {
+                result.setText("La recherche sur Discogs n'a rien donnée.");
+            }
         }
         if (fnac.isSelected()) {
-            products.addAll(Scrapping.ScrapFnac(searchTitle, searchGenre, searchPriceMin, searchPriceMax, searchDate));
+            if (!Scrapping.ScrapFnac(searchTitle, searchGenre, searchPriceMin, searchPriceMax, searchDate).isEmpty()) {
+                products.addAll(Scrapping.ScrapFnac(searchTitle, searchGenre, searchPriceMin, searchPriceMax, searchDate));
+            } else {
+                result.setText("La recherche sur la Fnac n'a rien donnée.");
+            }
         }
         if (vinylcorner.isSelected()) {
-            products.addAll(Scrapping.ScrapVinylCorner(searchTitle, searchGenre, searchPriceMin, searchPriceMax, searchDate));
+            if (!Scrapping.ScrapVinylCorner(searchTitle, searchGenre, searchPriceMin, searchPriceMax, searchDate).isEmpty()) {
+                products.addAll(Scrapping.ScrapVinylCorner(searchTitle, searchGenre, searchPriceMin, searchPriceMax, searchDate));
+            } else {
+                result.setText("La recherche sur Vinyl Corner n'a rien donnée.");
+            }
         }
         if (leboncoin.isSelected()) {
-            products.addAll(Scrapping.ScrapLeboncoin(searchTitle, searchGenre, searchPriceMin, searchPriceMax));
+            if (!Scrapping.ScrapLeboncoin(searchTitle, searchGenre, searchPriceMin, searchPriceMax).isEmpty()) {
+                products.addAll(Scrapping.ScrapLeboncoin(searchTitle, searchGenre, searchPriceMin, searchPriceMax));
+            } else {
+                result.setText("La recherche sur Le Bon Coin n'a rien donnée.");
+            }
         }
         if (mesvinyles.isSelected()) {
-            products.addAll(Scrapping.ScrapMesvinyles(searchTitle, searchGenre, searchPriceMin, searchPriceMax, searchDate));
+            if (!Scrapping.ScrapMesvinyles(searchTitle, searchGenre, searchPriceMin, searchPriceMax, searchDate).isEmpty()) {
+                products.addAll(Scrapping.ScrapMesvinyles(searchTitle, searchGenre, searchPriceMin, searchPriceMax, searchDate));
+            } else {
+                result.setText("La recherche sur Mesvinyles n'a rien donnée.");
+            }
         }
         if (culturefactory.isSelected()) {
-            products.addAll(Scrapping.ScrapCultureFactory(searchTitle, searchGenre, searchPriceMin, searchPriceMax));
+            if (!Scrapping.ScrapCultureFactory(searchTitle, searchGenre, searchPriceMin, searchPriceMax).isEmpty()) {
+                products.addAll(Scrapping.ScrapCultureFactory(searchTitle, searchGenre, searchPriceMin, searchPriceMax));
+            } else {
+                result.setText("La recherche sur Culture Factory n'a rien donnée.");
+            }
         }
         System.out.println(writeResult());
         System.out.println(products);

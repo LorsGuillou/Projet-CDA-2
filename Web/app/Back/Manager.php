@@ -41,6 +41,10 @@ class Manager {
         require ("./app/Front/page.php");
     }
 
+    public function article() {
+        require ("./app/Front/article.php");
+    }
+
     public function scrap() {
         $scraps = self::getDb();
         require ("./app/Front/scrap.php");
