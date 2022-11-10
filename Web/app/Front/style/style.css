@@ -339,8 +339,51 @@ section.narrow .indexContent .indexContentArticle p:last-child {
     margin-bottom: 40px;
 }
 
+#categoryblock #pageIcons {
+    font-size: 2rem;
+}
+
+#categoryblock #pageIcons i:first-child {
+    margin-right: 10px;
+    color: #D2AC48
+}
+
 #categoryblock #scroll {
     display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#categoryblock #scroll button {
+    padding: 5px 8px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 4px;
+}
+
+/* === Article === */
+
+#soloContent {
+    text-align: center;
+}
+
+#soloContent #soloTitle {
+    text-align: center;
+}
+
+#soloContent #soloSubtitle {
+    margin-bottom: 15px;
+}
+
+#soloContent img {
+    width: 300px;
+    height: 300px;
+    margin-bottom: 15px;
+}
+
+#soloContent ul li {
+    font-weight: bold;
+    margin-bottom: 2px;
 }
 
 /* === Footer === */
